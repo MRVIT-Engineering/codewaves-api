@@ -15,12 +15,14 @@ class AuthService extends Service {
 
   async insert(data) {
     try {
-      let document = await this.model.create(data);
-      if (document) {
-        console.log("Here we should send activation link via mailgun");
-        return document;
+      let user = await this.model.create(data);
+      if (user) {
+        await user.hashPassword();
+        await user.save();
+        return user;
       } else throw new Error("Something wrong happened");
     } catch (error) {
+      // console.log("Why you dont catch this error?");
       throw error;
     }
   }

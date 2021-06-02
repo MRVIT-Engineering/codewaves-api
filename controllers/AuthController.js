@@ -3,17 +3,27 @@
 const Controller = require("./Controller");
 const userService = require("../services/AuthService");
 const statusCodes = require("../constants/statusCodes");
-const autoBind = require("auto-bind");
+const errors = require("../constants/errors");
+const passport = require("passport");
 
 class AuthController extends Controller {
   constructor(service) {
     super(service);
-    autoBind(this);
   }
 
-  async _log() {
-    let user = await this.service.getByEmail("email");
-    console.log(user);
+  async login(req, res, next) {
+    passport.authenticate("local", (err, user, info) => {
+      if (err) return next(err);
+
+      if (!user)
+        return res.status(statusCodes.fail).send(errors.wrongCredentials);
+
+      req.logIn(user, (err) => {
+        if (err) return next(err);
+        console.log("user authenticated ");
+        return res.status(statusCodes.success).send(user);
+      });
+    })(req, res, next);
   }
 
   async register(req, res) {
@@ -21,16 +31,18 @@ class AuthController extends Controller {
     const emailAlreadyExists = await this.service.getByEmail(email);
 
     if (emailAlreadyExists)
-      return res
-        .stauts(statusCodes.fail)
-        .send({ emailInUse: true, message: "This email is already in use." });
+      return res.stauts(statusCodes.fail).send(errors.emailInUseError);
 
-    const newUser = await this.service.insert(req.body);
-    console.log("The newly created user is ", newUser);
+    try {
+      let newUser = await this.service.insert(req.body);
+      res.status(statusCodes.success).send(newUser);
+    } catch (error) {
+      console.log("Error in register controller ", error);
+      this._sendInternalErrorResponse(res, errors.internalServerError);
+    }
   }
 }
 
 const authController = new AuthController(userService);
-authController._log();
 
 module.exports = authController;
