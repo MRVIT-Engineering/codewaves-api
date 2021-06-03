@@ -11,7 +11,13 @@ module.exports = () => {
 
         let correctPass = await user.matchPassword(password);
 
-        if (correctPass) return done(null, user);
+        if (correctPass)
+          return done(null, {
+            _id: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+          });
         else return done(null, false);
       });
     })
