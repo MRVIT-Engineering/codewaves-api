@@ -11,16 +11,20 @@ class AuthController extends Controller {
     super(service);
   }
 
+  async isUserLoggedIn(req, res, next) {
+    res.send(req.isAuthenticated());
+  }
+
   async login(req, res, next) {
     passport.authenticate("local", (err, user, info) => {
       if (err) return next(err);
 
       if (!user)
+        // sending a fail status code instead of 401 because we dont want to reload the login page.
         return res.status(statusCodes.fail).send(errors.wrongCredentials);
 
       req.logIn(user, (err) => {
         if (err) return next(err);
-        console.log("user authenticated ");
         return res.status(statusCodes.success).send(user);
       });
     })(req, res, next);
