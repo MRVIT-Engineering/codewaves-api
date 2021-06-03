@@ -1,5 +1,6 @@
 "use strict";
 
+const autoBind = require("auto-bind");
 const statusCodes = require("../constants/statusCodes");
 
 module.exports = class Controller {
@@ -11,6 +12,7 @@ module.exports = class Controller {
 
   constructor(service) {
     this.service = service;
+    autoBind(this);
   }
 
   _sendInternalErrorResponse(res, error) {
@@ -38,8 +40,8 @@ module.exports = class Controller {
 
   async insert(req, res) {
     try {
-      const response = await this.service.insert(req.body);
-      return res.status(response.statusCode).json(response);
+      const document = await this.service.insert(req.body);
+      return res.status(statusCodes.success).send(document);
     } catch (error) {
       this._sendInternalErrorResponse(res, error);
     }
