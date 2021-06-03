@@ -15,6 +15,8 @@ class AuthController extends Controller {
     res.send(req.isAuthenticated());
   }
 
+  async logInWithGoogle(req, res, next) {}
+
   async login(req, res, next) {
     passport.authenticate("local", (err, user, info) => {
       if (err) return next(err);

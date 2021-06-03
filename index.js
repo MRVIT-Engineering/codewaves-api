@@ -28,12 +28,13 @@ app.use(
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "http://lcoalhost:8081"],
     credentials: true,
   })
 );
 
 /** Passport setup & config. */
+require("./config/passport/passport-google")(passport);
 require("./config/passport/passport-local")(passport);
 app.use(passport.initialize());
 app.use(passport.session());
