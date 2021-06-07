@@ -9,7 +9,6 @@ module.exports = (passport) => {
   passport.deserializeUser(async (id, done) => {
     User.findById(id)
       .then((user) => {
-        console.log("User from deserialize is ", user);
         return done(null, user);
       })
       .catch((error) => done(error));
@@ -20,10 +19,13 @@ module.exports = (passport) => {
       {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: process.env.GOOGLE_CALLBACK,
+        callbackURL: "http://localhost:8081/auth/google/callback",
+        passReqToCallback: true,
       },
-      async (accessToken, refreshToken, profile, done) => {
-        let createdUser = await User.findOne({ googleId: profile.id });
+      async (req, accessToken, refreshToken, profile, done) => {
+        let createdUser = await User.findOne({
+          email: profile.emails[0].value,
+        });
         if (createdUser) {
           console.log("We already created this user. Just log him in.");
           done(null, createdUser);
@@ -32,6 +34,7 @@ module.exports = (passport) => {
             firstName: profile.name.givenName,
             lastName: profile.name.familyName,
             email: profile.emails[0].value,
+            googleId: profile.id,
           });
 
           let newUserDoc = await user.save();

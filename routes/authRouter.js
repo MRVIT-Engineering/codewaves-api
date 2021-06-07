@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const controller = require("../controllers/AuthController");
 const passport = require("passport");
+const authMiddleware = require("../middleware/auth");
 
 router.post("/register", controller.register);
 router.post("/login", controller.login);
@@ -11,13 +12,16 @@ router.get(
 );
 
 router.get(
-  "/google_callback",
-  passport.authenticate("google", { failureRedirect: "/login" }),
-  function (req, res) {
-    console.log("Google callback response: ", response);
+  "/google/callback",
+  passport.authenticate("google", {
+    failureRedirect: process.env.GOOGLE_FAILURE_REDIRECT,
+    successRedirect: process.env.GOOGLE_SUCCESS_REDIRECT,
+  }),
+  (req, res) => {
+    res.send("Thank you for signing in!");
   }
 );
 
-router.get("/check", controller.isUserLoggedIn);
+router.post("/test", authMiddleware.isLoggedIn, controller.isUserLoggedIn);
 
 module.exports = router;

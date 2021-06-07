@@ -9,27 +9,33 @@ const PORT = process.env.PORT || 8081;
 const session = require("express-session");
 const passport = require("passport");
 const cors = require("cors");
-const cookieParser = require("cookie-parser");
+const cookieSession = require("cookie-session");
 
 const authRouter = require("./routes/authRouter");
 
 /** Defining express middleware */
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
+
+app.use(
+  cookieSession({
+    maxAge: 24 * 60 * 60 * 1000,
+    keys: [process.env.COOKIE_SECRET],
+  })
+);
+
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 
 app.use(
   session({
     secret: "ad9f8adsf98pdFDJ)3ffdsa",
     resave: true,
     saveUninitialized: true,
-  })
-);
-
-app.use(
-  cors({
-    origin: ["http://localhost:3000", "http://lcoalhost:8081"],
-    credentials: true,
   })
 );
 
