@@ -15,6 +15,8 @@ class AuthController extends Controller {
     res.send(req.isAuthenticated());
   }
 
+  async logInWithGoogle(req, res, next) {}
+
   async login(req, res, next) {
     passport.authenticate("local", (err, user, info) => {
       if (err) return next(err);
@@ -39,7 +41,7 @@ class AuthController extends Controller {
 
     try {
       let newUser = await this.service.insert(req.body);
-      res.status(statusCodes.success).send(newUser);
+      res.status(statusCodes.success).send({ success: true, ...newUser });
     } catch (error) {
       console.log("Error in register controller ", error);
       this._sendInternalErrorResponse(res, errors.internalServerError);
@@ -48,5 +50,4 @@ class AuthController extends Controller {
 }
 
 const authController = new AuthController(userService);
-// ce pula mea
 module.exports = authController;
