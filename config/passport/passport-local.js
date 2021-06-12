@@ -6,19 +6,24 @@ module.exports = () => {
   passport.use(
     new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
       User.findOne({ email }, async (err, user) => {
-        if (err) return done(err);
+        if (err) {
+          console.log(err);
+          return done(err);
+        }
+
         if (!user) return done(null, false);
 
         let correctPass = await user.matchPassword(password);
 
-        if (correctPass)
+        if (correctPass) {
+          console.log("Correct password");
           return done(null, {
             _id: user.id,
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,
           });
-        else return done(null, false);
+        } else return done(null, false);
       });
     })
   );

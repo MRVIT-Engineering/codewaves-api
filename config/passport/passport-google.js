@@ -1,5 +1,7 @@
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
+
 const User = require("../../models/User");
+const mailgun = require("../../helpers/mailgun");
 
 module.exports = (passport) => {
   passport.serializeUser((user, done) => {
@@ -26,8 +28,8 @@ module.exports = (passport) => {
         let createdUser = await User.findOne({
           email: profile.emails[0].value,
         });
+
         if (createdUser) {
-          console.log("We already created this user. Just log him in.");
           done(null, createdUser);
         } else {
           let user = new User({
@@ -38,6 +40,7 @@ module.exports = (passport) => {
           });
 
           let newUserDoc = await user.save();
+          mailgun.sendConfirmationLink(newUserDoc._id, newUserDoc.email);
           if (newUserDoc) done(null, newUserDoc);
         }
       }

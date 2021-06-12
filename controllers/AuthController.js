@@ -1,10 +1,13 @@
 "use strict";
 
+const passport = require("passport");
+
+const errors = require("../constants/errors");
+const statusCodes = require("../constants/statusCodes");
+
 const Controller = require("./Controller");
 const userService = require("../services/AuthService");
-const statusCodes = require("../constants/statusCodes");
-const errors = require("../constants/errors");
-const passport = require("passport");
+const mailgun = require("../helpers/mailgun");
 
 class AuthController extends Controller {
   constructor(service) {
@@ -22,8 +25,10 @@ class AuthController extends Controller {
       if (err) return next(err);
 
       if (!user)
-        // sending a fail status code instead of 401 because we dont want to reload the login page.
         return res.status(statusCodes.fail).send(errors.wrongCredentials);
+
+      if (!user.activated)
+        return res.status(statusCodes.fail).send(errors.accountNotActivated);
 
       req.logIn(user, (err) => {
         if (err) return next(err);
@@ -41,7 +46,8 @@ class AuthController extends Controller {
 
     try {
       let newUser = await this.service.insert(req.body);
-      res.status(statusCodes.success).send({ success: true, ...newUser });
+      mailgun.sendConfirmationLink(newUser._id, newUser.email);
+      res.status(statusCodes.success).send(newUser);
     } catch (error) {
       console.log("Error in register controller ", error);
       this._sendInternalErrorResponse(res, errors.internalServerError);
