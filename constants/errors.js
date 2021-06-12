@@ -9,6 +9,11 @@ module.exports = {
   },
   wrongCredentials: {
     wrongAuthCredentials: true,
-    message: "The email address or password is incorrect!",
+    message: "The email address or password are incorrect! Please try again.",
+  },
+  accountNotActivated: {
+    accountNotActive: true,
+    message:
+      "Please activate your account before logging in. Check your email for the activation link.",
   },
 };
