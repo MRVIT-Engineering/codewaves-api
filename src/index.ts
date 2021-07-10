@@ -3,15 +3,19 @@
 require("dotenv").config();
 require("./config/database");
 
-const express = require("express");
+import express from "express";
+import { resourceLimits } from "worker_threads";
+import { configPassportGoogle } from "./config/passport/passport-google";
+import { configPassportLocal } from "./config/passport/passport-local";
+
 const app = express();
 const PORT = process.env.PORT || 8081;
 const session = require("express-session");
-const passport = require("passport");
+const passport: any = require("passport");
 const cors = require("cors");
 const cookieSession = require("cookie-session");
 
-const authRouter = require("./routes/authRouter");
+import authRouter from "./routes/authRouter";
 
 /** Defining express middleware */
 app.use(express.json());
@@ -40,8 +44,8 @@ app.use(
 );
 
 /** Passport setup & config. */
-require("./config/passport/passport-google")(passport);
-require("./config/passport/passport-local")(passport);
+configPassportGoogle(passport);
+configPassportLocal(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 

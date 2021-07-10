@@ -7,6 +7,10 @@ const userSchema = new mongoose.Schema({
     required: false,
     default: "",
   },
+  activated: {
+    type: Boolean,
+    default: false,
+  },
   firstName: {
     type: String,
     required: true,
@@ -23,7 +27,6 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     minLength: 8,
-    // required: true,
   },
   progress: {
     type: Object,
@@ -41,8 +44,8 @@ const userSchema = new mongoose.Schema({
 
 userSchema.methods.hashPassword = function () {
   const saltRounds = 10;
-  return new Promise((res, rej) => {
-    bcrypt.hash(this.password, saltRounds, (err, hash) => {
+  return new Promise((res: any, rej: any) => {
+    bcrypt.hash(this.password, saltRounds, (err: any, hash: any) => {
       if (err) throw err;
       this.password = hash;
       res();
@@ -50,14 +53,13 @@ userSchema.methods.hashPassword = function () {
   });
 };
 
-userSchema.methods.matchPassword = function (password) {
-  return new Promise((resolve, reject) => {
-    bcrypt.compare(password, this.password, function (error, result) {
+userSchema.methods.matchPassword = function (password: string) {
+  return new Promise((res: any, rej: any) => {
+    bcrypt.compare(password, this.password, function (error: any, result: any) {
       if (error) throw error;
-      resolve(result);
+      res(result);
     });
   });
 };
 
-const User = mongoose.model("User", userSchema);
-module.exports = User;
+export const User = mongoose.model("User", userSchema);

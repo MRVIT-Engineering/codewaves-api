@@ -1,7 +1,9 @@
-const router = require("express").Router();
+import { Router } from "express";
+import passport from "passport";
+
 const controller = require("../controllers/AuthController");
-const passport = require("passport");
 const authMiddleware = require("../middleware/auth");
+const router = Router();
 
 router.post("/register", controller.register);
 router.post("/login", controller.login);
@@ -17,11 +19,11 @@ router.get(
     failureRedirect: process.env.GOOGLE_FAILURE_REDIRECT,
     successRedirect: process.env.GOOGLE_SUCCESS_REDIRECT,
   }),
-  (req, res) => {
+  (req: any, res: any) => {
     res.send("Thank you for signing in!");
   }
 );
 
 router.post("/test", authMiddleware.isLoggedIn, controller.isUserLoggedIn);
 
-module.exports = router;
+export default router;

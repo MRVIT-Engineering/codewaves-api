@@ -1,5 +1,5 @@
-const Service = require("./Service");
-const User = require("../models/User");
+import { Service } from "./Service";
+import { User } from "../models/User";
 
 class AuthService extends Service {
   /**
@@ -7,13 +7,14 @@ class AuthService extends Service {
    * If that is not the case we will return false to the controller.
    * @param {*} email
    */
-  async getByEmail(email) {
+
+  async getByEmail(email: string) {
     let document = await this.model.findOne({ email });
     if (document) return document;
     else return false;
   }
 
-  async insert(data) {
+  async insert(data: any) {
     try {
       let user = await this.model.create(data);
       if (user) {

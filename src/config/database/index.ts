@@ -8,7 +8,7 @@ mongoose.connect(
     useCreateIndex: true,
     useFindAndModify: false,
   },
-  (error) => {
+  (error: any) => {
     if (error) console.log(error);
     else console.log("Connected to Atlas.");
   }

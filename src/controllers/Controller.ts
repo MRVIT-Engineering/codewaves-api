@@ -1,25 +1,30 @@
 "use strict";
 
+import { Request, Response } from "express";
 const autoBind = require("auto-bind");
-const statusCodes = require("../constants/statusCodes");
 
-module.exports = class Controller {
+const statusCodes = require("../constants/statusCodes");
+import { Service } from "../services/Service";
+
+export class Controller {
   /**
    *  Base controller layer.
    *  @author Rares Modure
    *  @param service
    * */
 
-  constructor(service) {
+  service: Service & any;
+
+  constructor(service: Service) {
     this.service = service;
     autoBind(this);
   }
 
-  _sendInternalErrorResponse(res, error) {
+  _sendInternalErrorResponse(res: Response, error: any) {
     res.status(statusCodes.internalError).send({ error });
   }
 
-  async getById(req, res) {
+  async getById(req: Request, res: Response) {
     const { id } = req.params;
     try {
       const document = await this.service.get(id);
@@ -29,7 +34,7 @@ module.exports = class Controller {
     }
   }
 
-  async getAll(req, res) {
+  async getAll(req: Request, res: Response) {
     try {
       const documents = await this.service.getAll();
       return res.status(statusCodes.success).send(documents);
@@ -38,7 +43,7 @@ module.exports = class Controller {
     }
   }
 
-  async insert(req, res) {
+  async insert(req: Request, res: Response) {
     try {
       const document = await this.service.insert(req.body);
       return res.status(statusCodes.success).send(document);
@@ -47,7 +52,7 @@ module.exports = class Controller {
     }
   }
 
-  async updateById(req, res) {
+  async updateById(req: Request, res: Response) {
     const { id } = req.params;
     try {
       const document = await this.service.update(id, req.body);
@@ -57,7 +62,7 @@ module.exports = class Controller {
     }
   }
 
-  async deleteById(req, res) {
+  async deleteById(req: Request, res: Response) {
     const { id } = req.params;
     try {
       const document = await this.service.delete(id);
@@ -66,4 +71,4 @@ module.exports = class Controller {
       this._sendInternalErrorResponse(res, error);
     }
   }
-};
+}

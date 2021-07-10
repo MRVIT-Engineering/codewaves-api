@@ -1,19 +1,19 @@
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 
-const User = require("../../models/User");
-const mailgun = require("../../helpers/mailgun");
+import { User } from "../../models/User";
+import { sendConfirmationLink } from "../../helpers/mailgun";
 
-module.exports = (passport) => {
-  passport.serializeUser((user, done) => {
+export const configPassportGoogle = (passport: any) => {
+  passport.serializeUser((user: any, done: any) => {
     done(null, user.id);
   });
 
-  passport.deserializeUser(async (id, done) => {
+  passport.deserializeUser(async (id: string, done: any) => {
     User.findById(id)
-      .then((user) => {
+      .then((user: any) => {
         return done(null, user);
       })
-      .catch((error) => done(error));
+      .catch((error: any) => done(error));
   });
 
   passport.use(
@@ -24,7 +24,13 @@ module.exports = (passport) => {
         callbackURL: "http://localhost:8081/auth/google/callback",
         passReqToCallback: true,
       },
-      async (req, accessToken, refreshToken, profile, done) => {
+      async (
+        req: any,
+        accessToken: any,
+        refreshToken: any,
+        profile: any,
+        done: any
+      ) => {
         let createdUser = await User.findOne({
           email: profile.emails[0].value,
         });
@@ -40,7 +46,7 @@ module.exports = (passport) => {
           });
 
           let newUserDoc = await user.save();
-          mailgun.sendConfirmationLink(newUserDoc._id, newUserDoc.email);
+          sendConfirmationLink(newUserDoc._id, newUserDoc.email);
           if (newUserDoc) done(null, newUserDoc);
         }
       }

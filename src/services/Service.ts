@@ -1,13 +1,15 @@
 "use strict";
 
-module.exports = class Service {
+export class Service {
   /**
    * Base service layer.
    * @author Rares Modure
    * @param model mongodb database model.
    */
 
-  constructor(model) {
+  model: any;
+
+  constructor(model: any) {
     this.model = model;
   }
 
@@ -20,7 +22,7 @@ module.exports = class Service {
     }
   }
 
-  async get(id) {
+  async get(id: string) {
     try {
       let document = await this.model.findById(id);
       if (!document) throw Error("Document does not exist.");
@@ -30,7 +32,7 @@ module.exports = class Service {
     }
   }
 
-  async insert(data) {
+  async insert(data: any) {
     try {
       let document = await this.model.create(data);
       if (document) return document;
@@ -40,7 +42,7 @@ module.exports = class Service {
     }
   }
 
-  async update(id, data) {
+  async update(id: string, data: any) {
     try {
       let document = await this.model.findByIdAndUpdate(id, data, {
         new: true,
@@ -52,7 +54,7 @@ module.exports = class Service {
     }
   }
 
-  async delete(id) {
+  async delete(id: string) {
     try {
       let document = await this.model.findByIdAndDelete(id);
       if (!document) throw new Error("document not found");
@@ -61,4 +63,4 @@ module.exports = class Service {
       throw errors;
     }
   }
-};
+}

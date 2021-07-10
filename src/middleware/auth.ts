@@ -1,5 +1,5 @@
 module.exports = {
-  isLoggedIn(req, res, next) {
+  isLoggedIn(req: any, res: any, next: () => void) {
     if (req.isAuthenticated()) return next();
     else res.status(401).send();
   },
