@@ -1,0 +1,37 @@
+{
+  "name": "codewaves-api",
+  "version": "1.0.0",
+  "description": "REST API fro Codewaves.io",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./build/index.js",
+    "dev": "nodemon ./src/index.ts",
+    "build": "tsc -p ./src"
+  },
+  "author": "Rares Modure <modure_rares@mrv-it.com>",
+  "license": "ISC",
+  "dependencies": {
+    "@types/mailgun-js": "^0.22.12",
+    "@types/passport": "^1.0.7",
+    "@types/passport-local": "^1.0.34",
+    "auto-bind": "^4.0.0",
+    "bcrypt": "^5.0.1",
+    "cookie-session": "^1.4.0",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.2",
+    "mailgun-js": "^0.22.0",
+    "mongoose": "^5.12.12",
+    "passport": "^0.4.1",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/node": "^16.3.0",
+    "ts-node": "^10.0.0",
+    "typescript": "^4.3.5"
+  }
+}
