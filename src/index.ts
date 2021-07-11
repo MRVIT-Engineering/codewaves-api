@@ -1,57 +1,54 @@
-"use strict";
+/* eslint-disable */
+import * as dotenv from 'dotenv';
+dotenv.config();
 
-require("dotenv").config();
-require("./config/database");
+import cors from 'cors';
+import express from 'express';
+import passport from 'passport';
+import session from 'express-session';
+import cookieParser from 'cookie-parser';
+import { initDb } from './config/database/index';
 
-import express from "express";
-import { resourceLimits } from "worker_threads";
-import { configPassportGoogle } from "./config/passport/passport-google";
-import { configPassportLocal } from "./config/passport/passport-local";
+import { configPassportGoogle } from './config/passport/passport-google';
+import { configPassportLocal } from './config/passport/passport-local';
 
+import authRouter from './routes/authRouter';
+import courseRouter from './routes/courseRouter';
+
+initDb();
 const app = express();
 const PORT = process.env.PORT || 8081;
-const session = require("express-session");
-const passport: any = require("passport");
-const cors = require("cors");
-const cookieSession = require("cookie-session");
-
-import authRouter from "./routes/authRouter";
+// const session = require("express-session");
+// const cookieSession = require("cookie-session");
 
 /** Defining express middleware */
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(
-  cookieSession({
-    maxAge: 24 * 60 * 60 * 1000,
-    keys: [process.env.COOKIE_SECRET],
-  })
-);
-
-app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: 'http://localhost:3000',
     credentials: true,
   })
 );
-
 app.use(
   session({
-    secret: "ad9f8adsf98pdFDJ)3ffdsa",
+    secret: 'secretcode',
     resave: true,
     saveUninitialized: true,
   })
 );
-
-/** Passport setup & config. */
-configPassportGoogle(passport);
-configPassportLocal(passport);
+app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
 
+configPassportGoogle();
+configPassportLocal();
+
 /** Defining API routes.*/
-app.use("/auth", authRouter);
+app.use('/auth', authRouter);
+app.use('/course', courseRouter);
 
 app.listen(PORT, () => {
-  console.log("Server started on port " + PORT);
+  console.log(`Server started on port ${PORT}`);
 });

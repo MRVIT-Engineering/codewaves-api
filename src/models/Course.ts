@@ -1,4 +1,13 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose';
+
+import { Lecture } from '../constants/types';
+
+export interface Course {
+  title: string;
+  requirements: [];
+  difficulty: 1 | 2 | 3;
+  lectures: Lecture[];
+}
 
 const CourseSchema = new mongoose.Schema({
   title: {
@@ -19,4 +28,4 @@ const CourseSchema = new mongoose.Schema({
   },
 });
 
-export const Course = mongoose.model("course", CourseSchema);
+export const Course = mongoose.model('course', CourseSchema);

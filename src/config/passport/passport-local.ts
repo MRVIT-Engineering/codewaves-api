@@ -1,10 +1,9 @@
-// const LocalStrategy = require("passport-local").Strategy;
-
-import * as passportLocal from "passport-local";
+import passport from "passport";
+import passportLocal from "passport-local";
 const LocalStrategy = passportLocal.Strategy;
 import { User } from "../../models/User";
 
-export const configPassportLocal = (passport: any) => {
+export const configPassportLocal = () => {
   passport.use(
     new LocalStrategy(
       { usernameField: "email" },
@@ -37,7 +36,7 @@ export const configPassportLocal = (passport: any) => {
     done(null, user._id);
   });
 
-  passport.deserializeUser((id: string, done: any) => {
+  passport.deserializeUser((id: any, done: any) => {
     User.findById(id, (err: any, user: any) => {
       done(err, user);
     });

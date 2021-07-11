@@ -1,13 +1,13 @@
-"use strict";
+'use strict';
 
-import { Response, NextFunction } from "express";
-const passport = require("passport");
+import { Response, NextFunction } from 'express';
+import passport from 'passport';
 
-import { Controller } from "./Controller";
-const errors = require("../constants/errors");
-const statusCodes = require("../constants/statusCodes");
-const userService = require("../services/AuthService");
-const mailgun = require("../helpers/mailgun");
+import { Controller } from './Controller';
+import { errors } from '../constants/errors';
+const statusCodes = require('../constants/statusCodes');
+const userService = require('../services/AuthService');
+const mailgun = require('../helpers/mailgun');
 
 class AuthController extends Controller {
   constructor(service: any) {
@@ -15,11 +15,12 @@ class AuthController extends Controller {
   }
 
   async isUserLoggedIn(req: any, res: Response, next: NextFunction) {
+    console.log('In the next request: ', req.isAuthenticated());
     res.send(req.isAuthenticated());
   }
 
   async login(req: any, res: Response, next: NextFunction) {
-    passport.authenticate("local", (err: any, user: any, info: any) => {
+    passport.authenticate('local', (err: any, user: any, info: any) => {
       if (err) return next(err);
 
       if (!user)
@@ -30,6 +31,7 @@ class AuthController extends Controller {
 
       req.logIn(user, (err: any) => {
         if (err) return next(err);
+        console.log('Right after login: ', req.isAuthenticated());
         return res.status(statusCodes.success).send(user);
       });
     })(req, res, next);
@@ -47,11 +49,10 @@ class AuthController extends Controller {
       mailgun.sendConfirmationLink(newUser._id, newUser.email);
       res.status(statusCodes.success).send(newUser);
     } catch (error) {
-      console.log("Error in register controller ", error);
-      this._sendInternalErrorResponse(res, errors.internalServerError);
+      console.log('Error in register controller ', error);
+      this.sendInternalErrorResponse(res, errors.internalServerError);
     }
   }
 }
 
-const authController = new AuthController(userService);
-module.exports = authController;
+export const authController = new AuthController(userService);

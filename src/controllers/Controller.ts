@@ -1,10 +1,10 @@
-"use strict";
+import { Request, Response } from 'express';
 
-import { Request, Response } from "express";
-const autoBind = require("auto-bind");
+import { Service } from '../services/Service';
 
-const statusCodes = require("../constants/statusCodes");
-import { Service } from "../services/Service";
+const autoBind = require('auto-bind');
+
+const statusCodes = require('../constants/statusCodes');
 
 export class Controller {
   /**
@@ -20,7 +20,7 @@ export class Controller {
     autoBind(this);
   }
 
-  _sendInternalErrorResponse(res: Response, error: any) {
+  sendInternalErrorResponse(res: Response, error: any) {
     res.status(statusCodes.internalError).send({ error });
   }
 
@@ -28,9 +28,9 @@ export class Controller {
     const { id } = req.params;
     try {
       const document = await this.service.get(id);
-      res.status(statusCodes.success).send(document);
+      return res.status(statusCodes.success).send(document);
     } catch (error) {
-      this._sendInternalErrorResponse(res, error);
+      return this.sendInternalErrorResponse(res, error);
     }
   }
 
@@ -39,7 +39,7 @@ export class Controller {
       const documents = await this.service.getAll();
       return res.status(statusCodes.success).send(documents);
     } catch (error) {
-      this._sendInternalErrorResponse(res, error);
+      return this.sendInternalErrorResponse(res, error);
     }
   }
 
@@ -48,7 +48,7 @@ export class Controller {
       const document = await this.service.insert(req.body);
       return res.status(statusCodes.success).send(document);
     } catch (error) {
-      this._sendInternalErrorResponse(res, error);
+      return this.sendInternalErrorResponse(res, error);
     }
   }
 
@@ -58,7 +58,7 @@ export class Controller {
       const document = await this.service.update(id, req.body);
       return res.status(statusCodes.success).send(document);
     } catch (error) {
-      this._sendInternalErrorResponse(res, error);
+      return this.sendInternalErrorResponse(res, error);
     }
   }
 
@@ -68,7 +68,7 @@ export class Controller {
       const document = await this.service.delete(id);
       return res.status(statusCodes.success).send(document);
     } catch (error) {
-      this._sendInternalErrorResponse(res, error);
+      return this.sendInternalErrorResponse(res, error);
     }
   }
 }
