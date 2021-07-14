@@ -13,18 +13,31 @@ const CourseSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
+    unique: true,
   },
-  requirements: {
-    type: Array,
-    default: [],
+  description: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  imageUrl: {
+    type: String,
+    required: true,
   },
   difficulty: {
     type: Number,
     required: true,
+    unique: false,
   },
   lectures: {
     type: Array,
     default: [],
+    unique: false,
+  },
+  requirements: {
+    type: Array,
+    default: [],
+    unique: false,
   },
 });
 

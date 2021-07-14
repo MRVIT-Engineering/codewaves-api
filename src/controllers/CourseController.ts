@@ -1,10 +1,33 @@
+import { Request, Response } from 'express';
+
 import { Controller } from './Controller';
 import { courseService } from '../services/CourseService';
-// import { errors } from '../constants/errors';
 
 class CourseController extends Controller {
   constructor(service: any) {
     super(service);
+  }
+
+  async addCourseWithImage(req: Request, res: Response) {
+    // eslint-disable-next-line
+    const {
+      body: { title, difficulty, description },
+      file,
+    } = req;
+
+    const data = {
+      title,
+      description,
+      difficulty: +difficulty,
+      imageUrl: `${process.env.CODEWAVES_API_URL}/uploads/images/${file?.originalname}`,
+    };
+
+    try {
+      const newCourse = await this.service.insert(data);
+      this.sendSuccessResponse(res, newCourse);
+    } catch (error) {
+      this.sendInternalErrorResponse(res, error);
+    }
   }
 }
 

@@ -19,6 +19,8 @@
     "no-useless-constructor": "off",
     "no-unused-vars": "warn",
     "prefer-destructuring": "off",
-    "spaced-comment": "off"
+    "spaced-comment": "off",
+    "no-underscore-dangle": "off",
+    "no-else-return": "off"
   }
 }

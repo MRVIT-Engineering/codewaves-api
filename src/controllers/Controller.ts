@@ -9,7 +9,7 @@ const statusCodes = require('../constants/statusCodes');
 export class Controller {
   /**
    *  Base controller layer.
-   *  @author Rares Modure
+   *
    *  @param service
    * */
 
@@ -24,11 +24,15 @@ export class Controller {
     res.status(statusCodes.internalError).send({ error });
   }
 
+  sendSuccessResponse(res: Response, data: any) {
+    res.status(statusCodes.success).send(data);
+  }
+
   async getById(req: Request, res: Response) {
     const { id } = req.params;
     try {
       const document = await this.service.get(id);
-      return res.status(statusCodes.success).send(document);
+      return this.sendSuccessResponse(res, document);
     } catch (error) {
       return this.sendInternalErrorResponse(res, error);
     }
