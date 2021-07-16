@@ -9,7 +9,6 @@ class CourseController extends Controller {
   }
 
   async addCourseWithImage(req: Request, res: Response) {
-    // eslint-disable-next-line
     const {
       body: { title, difficulty, description },
       file,
@@ -19,7 +18,7 @@ class CourseController extends Controller {
       title,
       description,
       difficulty: +difficulty,
-      imageUrl: `${process.env.CODEWAVES_API_URL}/uploads/images/${file?.originalname}`,
+      imageUrl: `${process.env.CODEWAVES_API_URL}/images/${file?.originalname}`,
     };
 
     try {
