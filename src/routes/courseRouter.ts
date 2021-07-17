@@ -7,5 +7,7 @@ const router = Router();
 
 router.post('/', upload.single('courseImage'), courseController.addCourseWithImage);
 router.get('/', courseController.getAll);
+router.put('/:id', courseController.updateById);
+router.delete('/:id', courseController.deleteById);
 
 export default router;

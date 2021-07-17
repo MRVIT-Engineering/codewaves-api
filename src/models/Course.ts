@@ -20,6 +20,10 @@ const CourseSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  publish: {
+    type: Boolean,
+    default: false,
+  },
   imageUrl: {
     type: String,
     required: true,
