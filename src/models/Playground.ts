@@ -1,9 +1,9 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const playgroundSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    ref: 'User',
     required: true,
   },
   title: {
@@ -24,4 +24,4 @@ const playgroundSchema = new mongoose.Schema({
   },
 });
 
-const Playground = mongoose.model("Playground".playgroundSchema);
+export const Playground = mongoose.model('Playground', playgroundSchema);
