@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 import { Lecture } from '../constants/types';
 
@@ -12,12 +12,10 @@ export interface Course {
 const CourseSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: true,
     unique: true,
   },
   description: {
     type: String,
-    required: true,
     unique: true,
   },
   publish: {
@@ -33,11 +31,7 @@ const CourseSchema = new mongoose.Schema({
     required: true,
     unique: false,
   },
-  lectures: {
-    type: Array,
-    default: [],
-    unique: false,
-  },
+  sections: [{ type: Schema.Types.ObjectId, ref: 'Section' }],
   requirements: {
     type: Array,
     default: [],
@@ -45,4 +39,4 @@ const CourseSchema = new mongoose.Schema({
   },
 });
 
-export const Course = mongoose.model('course', CourseSchema);
+export const Course = mongoose.model('Course', CourseSchema);

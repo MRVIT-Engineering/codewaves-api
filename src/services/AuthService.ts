@@ -1,5 +1,5 @@
-import { Service } from "./Service";
-import { User } from "../models/User";
+import { Service } from './Service';
+import { User } from '../models/User';
 
 class AuthService extends Service {
   /**
@@ -9,23 +9,18 @@ class AuthService extends Service {
    */
 
   async getByEmail(email: string) {
-    let document = await this.model.findOne({ email });
+    const document = await this.model.findOne({ email });
     if (document) return document;
     else return false;
   }
 
   async insert(data: any) {
-    try {
-      let user = await this.model.create(data);
-      if (user) {
-        await user.hashPassword();
-        await user.save();
-        return user;
-      } else throw new Error("Something wrong happened");
-    } catch (error) {
-      // console.log("Why you dont catch this error?");
-      throw error;
-    }
+    const user = await this.model.create(data);
+    if (user) {
+      await user.hashPassword();
+      await user.save();
+      return user;
+    } else throw new Error('Something wrong happened');
   }
 }
 

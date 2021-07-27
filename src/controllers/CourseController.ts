@@ -19,6 +19,7 @@ class CourseController extends Controller {
       description,
       difficulty: +difficulty,
       imageUrl: `${process.env.CODEWAVES_API_URL}/images/${file?.originalname}`,
+      sections: [],
     };
 
     try {
@@ -27,6 +28,19 @@ class CourseController extends Controller {
     } catch (error) {
       this.sendInternalErrorResponse(res, error);
     }
+  }
+
+  async addSection(req: Request, res: Response) {
+    const { id, data } = req.body;
+    try {
+      await this.service.insertSection(id, data);
+      const doc = await this.service.get(id);
+
+      this.sendSuccessResponse(res, doc);
+    } catch (e) {
+      this.sendInternalErrorResponse(res, e);
+    }
+    return null;
   }
 }
 
