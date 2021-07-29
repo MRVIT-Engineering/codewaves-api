@@ -1,6 +1,6 @@
 {
   "name": "codewaves-api",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "REST API fro Codewaves.io",
   "main": "index.js",
   "scripts": {
