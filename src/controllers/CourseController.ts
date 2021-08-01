@@ -42,6 +42,13 @@ class CourseController extends Controller {
     }
     return null;
   }
+
+  async addLecture(req: Request, res: Response) {
+    const { id, data } = req.body;
+    const newSection = await this.service.addLecture(id, data);
+    if (newSection) this.sendSuccessResponse(res, newSection);
+    else this.sendInternalErrorResponse(res, null);
+  }
 }
 
 export const courseController = new CourseController(courseService);

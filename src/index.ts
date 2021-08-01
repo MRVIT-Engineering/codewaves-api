@@ -14,6 +14,7 @@ import { configPassportLocal } from './config/passport/passport-local';
 
 import authRouter from './routes/authRouter';
 import courseRouter from './routes/courseRouter';
+import sectionRouter from './routes/sectionRouter';
 
 initDb();
 const app = express();
@@ -32,6 +33,7 @@ app.use(
     credentials: true,
   })
 );
+
 app.use(
   session({
     secret: 'secretcode',
@@ -39,6 +41,7 @@ app.use(
     saveUninitialized: true,
   })
 );
+
 app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
@@ -49,6 +52,7 @@ configPassportLocal();
 /** Defining API routes.*/
 app.use('/auth', authRouter);
 app.use('/course', courseRouter);
+app.use('/section', sectionRouter);
 
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
