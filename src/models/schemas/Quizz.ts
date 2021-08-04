@@ -1,11 +1,5 @@
 import mongoose from 'mongoose';
 
-export type QuizzAnswer = {
-  textVariant?: string;
-  codeVariant?: string;
-  language?: string;
-};
-
 export type Option = {
   text?: string;
   code?: string;

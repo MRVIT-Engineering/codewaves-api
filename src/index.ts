@@ -15,6 +15,7 @@ import { configPassportLocal } from './config/passport/passport-local';
 import authRouter from './routes/authRouter';
 import courseRouter from './routes/courseRouter';
 import sectionRouter from './routes/sectionRouter';
+import quizzRouter from './routes/quizzRouter';
 
 initDb();
 const app = express();
@@ -53,6 +54,7 @@ configPassportLocal();
 app.use('/auth', authRouter);
 app.use('/course', courseRouter);
 app.use('/section', sectionRouter);
+app.use('/quizz', quizzRouter);
 
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
