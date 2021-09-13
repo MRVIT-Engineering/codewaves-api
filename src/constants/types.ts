@@ -4,9 +4,10 @@ export type Tab = {
   code: string;
 };
 
-export type Lecture = {
+export type LectureType = {
   title: string;
   type: 'text' | 'quizz' | 'example';
   sublectures?: [];
   tabs?: Tab[];
+  quizz?: {};
 };

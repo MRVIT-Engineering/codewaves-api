@@ -1,7 +1,9 @@
 import { Course } from '../models/Course';
-import { Lecture, LectureType } from '../models/schemas/Lecture';
+import { Lecture } from '../models/schemas/Lecture';
 import { Section, SectionType } from '../models/schemas/Section';
 import { Service } from './Service';
+
+import { LectureType } from '../constants/types';
 
 class CourseService extends Service {
   async get(id: string) {

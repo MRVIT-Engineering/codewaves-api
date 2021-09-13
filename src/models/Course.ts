@@ -1,12 +1,12 @@
 import mongoose, { Schema } from 'mongoose';
 
-import { Lecture } from '../constants/types';
+import { LectureType } from '../constants/types';
 
 export interface Course {
   title: string;
   requirements: [];
   difficulty: 1 | 2 | 3;
-  lectures: Lecture[];
+  lectures: LectureType[];
 }
 
 const CourseSchema = new mongoose.Schema({

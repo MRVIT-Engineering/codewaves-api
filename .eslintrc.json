@@ -21,6 +21,11 @@
     "prefer-destructuring": "off",
     "spaced-comment": "off",
     "no-underscore-dangle": "off",
-    "no-else-return": "off"
+    "no-else-return": "off",
+    "no-shadow": "off",
+    "comma-dangle": "off",
+    "prefer-arrow-callback": "off",
+    "implicit-arrow-linebreak": "off",
+    "func-names": "off"
   }
 }

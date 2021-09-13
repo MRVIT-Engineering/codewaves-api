@@ -1,38 +1,36 @@
-import passport from "passport";
-import passportLocal from "passport-local";
+import passport from 'passport';
+import passportLocal from 'passport-local';
+import { User, UserInterface } from '../../models/User';
+
 const LocalStrategy = passportLocal.Strategy;
-import { User } from "../../models/User";
 
 export const configPassportLocal = () => {
   passport.use(
-    new LocalStrategy(
-      { usernameField: "email" },
-      (email: string, password: string, done: any) => {
-        User.findOne({ email }, async (err: any, user: any) => {
-          if (err) {
-            console.log(err);
-            return done(err);
-          }
+    new LocalStrategy({ usernameField: 'email' }, (email: string, password: string, done: any) => {
+      User.findOne({ email }, async (err: any, user: any) => {
+        if (err) {
+          // console.log(err);
+          return done(err);
+        }
 
-          if (!user) return done(null, false);
+        if (!user) return done(null, false);
 
-          let correctPass = await user.matchPassword(password);
+        const correctPass = await user.matchPassword(password);
 
-          if (correctPass) {
-            return done(null, {
-              _id: user.id,
-              firstName: user.firstName,
-              lastName: user.lastName,
-              email: user.email,
-              activated: user.activated,
-            });
-          } else return done(null, false);
-        });
-      }
-    )
+        if (correctPass) {
+          return done(null, {
+            _id: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            activated: user.activated,
+          });
+        } else return done(null, false);
+      });
+    })
   );
 
-  passport.serializeUser((user: any, done: any) => {
+  passport.serializeUser((user: UserInterface, done: any) => {
     done(null, user._id);
   });
 

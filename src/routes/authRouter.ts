@@ -8,10 +8,7 @@ const router = Router();
 router.post('/register', authController.register);
 router.post('/login', authController.login);
 
-router.get(
-  '/login_google',
-  passport.authenticate('google', { scope: ['profile', 'email'] })
-);
+router.get('/login_google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 router.get(
   '/google/callback',
@@ -20,7 +17,7 @@ router.get(
     successRedirect: process.env.GOOGLE_SUCCESS_REDIRECT,
   }),
   (req: any, res: any) => {
-    res.send('Thank you for signing in!');
+    res.send({ message: 'This is the response from google login ???? ' });
   }
 );
 

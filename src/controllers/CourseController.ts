@@ -45,6 +45,7 @@ class CourseController extends Controller {
 
   async addLecture(req: Request, res: Response) {
     const { id, data } = req.body;
+    // console.log(req.user);
     const newSection = await this.service.addLecture(id, data);
     if (newSection) this.sendSuccessResponse(res, newSection);
     else this.sendInternalErrorResponse(res, null);

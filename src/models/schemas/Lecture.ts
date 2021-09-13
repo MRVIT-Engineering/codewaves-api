@@ -1,14 +1,14 @@
 import mongoose, { Schema } from 'mongoose';
 
-import { Tab } from '../../constants/types';
+// import { Tab } from '../../constants/types';
 
-export interface LectureType {
-  title: string;
-  type: 'text' | 'quizz' | 'example';
-  sublectures?: [];
-  tabs?: Tab[];
-  quizz?: {};
-}
+// export interface LectureType {
+//   title: string;
+//   type: 'text' | 'quizz' | 'example';
+//   sublectures?: [];
+//   tabs?: Tab[];
+//   quizz?: {};
+// }
 
 export const LectureSchema = new mongoose.Schema({
   title: {
