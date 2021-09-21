@@ -21,6 +21,7 @@ import sectionRouter from './routes/sectionRouter';
 import quizzRouter from './routes/quizzRouter';
 import algoRouter from './routes/algoRouter';
 import playgroundRouter from './routes/playgroundRouter';
+import problemRouter from './routes/problemRouter';
 import sphereEngineRouter from './routes/sphereEngiineRouter';
 
 initDb();
@@ -74,6 +75,7 @@ app.use('/quizz', quizzRouter);
 app.use('/algo', algoRouter);
 app.use('/sphere_engine', sphereEngineRouter);
 app.use('/playground', playgroundRouter);
+app.use('/problem', problemRouter);
 
 http.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
