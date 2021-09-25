@@ -5,9 +5,11 @@ import { problemsController } from '../controllers/SphereEngine/ProblemsControll
 const router = Router();
 
 router.post('/', problemsController.insert);
-router.put('/:id', problemsController.updateById);
-router.get('/:id', problemsController.getById);
 router.get('/', problemsController.getAll);
+router.put('/test_case', problemsController.addProblemTestCase);
+
+router.get('/:id', problemsController.getById);
+router.put('/:id', problemsController.updateById);
 router.delete('/:id', problemsController.deleteById);
 
 export default router;

@@ -4,6 +4,7 @@ import { Service } from './Service';
 
 class ProblemsService extends Service {
   async addProblemTestCase(testcase: TestCase, problemId: string) {
+    console.log(testcase);
     this.model.findByIdAndUpdate(problemId, { $push: { testCases: testcase } });
   }
 }

@@ -36,18 +36,6 @@ export class ProblemsController extends Controller {
     else this.sendInternalErrorResponse(res, new Error('Something went wrong with Sphere Engine'));
   }
 
-  async getSPProblemTestCases(req: Request, res: Response) {
-    try {
-      const { problemId } = req.params;
-      const { data, status } = await axios.get(`${URL}/problems/${problemId}/testcases?access_token=${TOKEN}`);
-
-      if (status === 200) this.sendSuccessResponse(res, data.items);
-      else this.sendInternalErrorResponse(res, new Error('Something went wrong with Sphere Engine.'));
-    } catch (error) {
-      this.sendInternalErrorResponse(res, error);
-    }
-  }
-
   async addProblemTestCase(req: Request, res: Response) {
     const { input, output, timelimit, problemId } = req.body;
     try {

@@ -11,8 +11,7 @@ router.get('/submission/:id', compilersController.getSubmissionInfo);
 router.get('/submission/stream/:submissionId/:stream', compilersController.getSubmissionStream);
 
 router.post('/problem', problemsController.add);
-router.post('/problem/test_case', problemsController.addSPTestCase);
-router.get('/problem/test_case/:problemId', problemsController.getSPProblemTestCases);
+router.post('/test_case', problemsController.addSPTestCase);
 
 router.post('/webhooks', (req, res) => {
   emitEvent('submissionStatusChanged', req.body);
