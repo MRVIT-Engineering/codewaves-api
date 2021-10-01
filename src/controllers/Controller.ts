@@ -1,10 +1,9 @@
 import { Request, Response } from 'express';
 
 import { Service } from '../services/Service';
+import { STATUS_CODES } from '../constants/statusCodes';
 
 const autoBind = require('auto-bind');
-
-const statusCodes = require('../constants/statusCodes');
 
 export class Controller {
   /**
@@ -21,11 +20,11 @@ export class Controller {
   }
 
   sendInternalErrorResponse(res: Response, error: any) {
-    res.status(statusCodes.internalError).send({ error });
+    res.status(STATUS_CODES.internalError).send({ error });
   }
 
   sendSuccessResponse(res: Response, data: any) {
-    res.status(statusCodes.success).send(data);
+    res.status(STATUS_CODES.success).send(data);
   }
 
   async getById(req: Request, res: Response) {
@@ -41,7 +40,7 @@ export class Controller {
   async getAll(req: Request, res: Response) {
     try {
       const documents = await this.service.getAll();
-      return res.status(statusCodes.success).send(documents);
+      return res.status(STATUS_CODES.success).send(documents);
     } catch (error) {
       return this.sendInternalErrorResponse(res, error);
     }
@@ -50,7 +49,7 @@ export class Controller {
   async insert(req: Request, res: Response) {
     try {
       const document = await this.service.insert(req.body);
-      return res.status(statusCodes.success).send(document);
+      return res.status(STATUS_CODES.success).send(document);
     } catch (error) {
       return this.sendInternalErrorResponse(res, error);
     }
@@ -60,7 +59,7 @@ export class Controller {
     const { id } = req.params;
     try {
       const document = await this.service.update(id, req.body);
-      return res.status(statusCodes.success).send(document);
+      return res.status(STATUS_CODES.success).send(document);
     } catch (error) {
       return this.sendInternalErrorResponse(res, error);
     }
@@ -70,7 +69,7 @@ export class Controller {
     const { id } = req.params;
     try {
       const document = await this.service.delete(id);
-      return res.status(statusCodes.success).send(document);
+      return res.status(STATUS_CODES.success).send(document);
     } catch (error) {
       return this.sendInternalErrorResponse(res, error);
     }

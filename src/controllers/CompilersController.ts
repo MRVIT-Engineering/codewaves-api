@@ -1,17 +1,21 @@
 import { Request, Response } from 'express';
 import axios from 'axios';
 
+import { Controller } from './Controller';
+import { Service } from '../services/Service';
+import { Problem } from '../models/Problem';
+
 const TOKEN = process.env.COMPILERS_TOKEN;
 const URL = process.env.COMPILERS_URL;
 
-export class CompilersController {
+export class CompilersController extends Controller {
   async createCodeSubmission(req: Request, res: Response) {
     try {
-      const { source, compilerId } = req.body;
-      const { data } = await axios.post(`${URL}/submissions?access_token=${TOKEN}`, { source, compilerId });
-      res.status(200).send(data);
+      const { source, compilerId, input } = req.body;
+      const result = await axios.post(`${URL}/submissions?access_token=${TOKEN}`, { source, compilerId, input });
+      if (result) this.sendSuccessResponse(res, result.data);
     } catch (error) {
-      res.status(500).send(false);
+      this.sendInternalErrorResponse(res, error);
     }
   }
 
@@ -36,4 +40,4 @@ export class CompilersController {
   }
 }
 
-export const compilersController = new CompilersController();
+export const compilersController = new CompilersController(new Service(Problem));

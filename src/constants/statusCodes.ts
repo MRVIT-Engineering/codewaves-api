@@ -1,7 +1,6 @@
-module.exports = {
-  success: 200,
-  fail: 201,
-  unauthorized: 401,
-  notFound: 404,
-  internalError: 500,
-};
+/* eslint-disable */
+export enum STATUS_CODES {
+  success = 200,
+  unauthorized = 401,
+  internalError = 500,
+}
